@@ -2,7 +2,7 @@ version: "3.6"
 
 services:
   jupyter:
-    image: irixjp/pai-jupyter:2020.06.17
+    image: irixjp/pai-jupyter:latest
     container_name: console
     hostname: console
     restart: unless-stopped
@@ -13,7 +13,7 @@ services:
     environment:
       JPL_PASSWORD: password
       TOWER_HOST: "http://192.168.77.13:8052/"
-      TOWER_VERIFY_SSL: False
+      TOWER_VERIFY_SSL: "False"
     networks:
       infraci_nw:
         ipv4_address: 192.168.77.10

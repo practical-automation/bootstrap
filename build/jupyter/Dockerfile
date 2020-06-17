@@ -28,12 +28,16 @@ RUN jupyter labextension install -y @jupyterlab/toc
 RUN useradd jupyter -m -d /jupyter && \
     mkdir -p /notebooks && \
     chown -R jupyter:jupyter /notebooks && \
-    echo 'jupyter ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers
+    echo 'jupyter ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers && \
+    usermod -a -G root jupyter
 USER jupyter
 WORKDIR /jupyter
 
 COPY --chown=jupyter:jupyter build/jupyter/assets/.jupyter /jupyter/.jupyter
 COPY --chown=jupyter:jupyter build/jupyter/assets/.ansible.cfg /jupyter/.ansible.cfg
+COPY --chown=jupyter:jupyter build/jupyter/assets/.tower_cli.cfg /jupyter/.tower_cli.cfg
+
+RUN ansible-galaxy collection install awx.awx
 
 RUN echo "alias ls='ls --color'" >> /jupyter/.bashrc  && \
     echo "alias ll='ls -alF --color'" >> /jupyter/.bashrc
