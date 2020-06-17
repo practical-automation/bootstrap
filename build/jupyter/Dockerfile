@@ -20,7 +20,8 @@ RUN dnf install -y 'dnf-command(config-manager)' && \
 
 RUN pip3 install -U pip setuptools && \
     pip install ansible ansible-lint yamllint yq jq && \
-    pip install jupyterlab 
+    pip install jupyterlab && \
+    pip install "https://github.com/ansible/awx/archive/12.0.0.tar.gz#egg=awxkit&subdirectory=awxkit"
 
 RUN jupyter labextension install -y @jupyterlab/toc
 

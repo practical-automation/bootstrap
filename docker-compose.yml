@@ -12,6 +12,8 @@ services:
       - "8080:8888"
     environment:
       JPL_PASSWORD: password
+      TOWER_HOST: "http://192.168.77.13:8052/"
+      TOWER_VERIFY_SSL: False
     networks:
       infraci_nw:
         ipv4_address: 192.168.77.10
