@@ -13,6 +13,11 @@ RUN dnf update -y && \
     alternatives --set python /usr/bin/python3 && \
     dnf clean all
 
+RUN dnf install 'dnf-command(config-manager)' && \
+    dnf config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo && \
+    dnf install docker-ce-cli && \
+    dnf clean all
+
 RUN pip3 install -U pip setuptools && \
     pip install ansible ansible-lint yamllint yq jq && \
     pip install jupyterlab 

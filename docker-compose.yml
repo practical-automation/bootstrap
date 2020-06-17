@@ -2,7 +2,7 @@ version: "3.6"
 
 services:
   jupyter:
-    image: irixjp/aitac-automation-jupyter:dev
+    image: irixjp/pai-jupyter:2020.06.17
     container_name: console
     hostname: console
     restart: unless-stopped
@@ -17,7 +17,7 @@ services:
         ipv4_address: 192.168.77.10
 
   gitlab:
-    image: gitlab/gitlab-ce:12.10.11-ce.0
+    image: irixjp/pai-gitlab-ce:12.10.11-ce.0
     container_name: gitlab
     hostname: gitlab
     restart: unless-stopped
@@ -30,7 +30,7 @@ services:
         ipv4_address: 192.168.77.11
 
   gitlab-runner:
-    image: gitlab/gitlab-runner:v12.9.1
+    image: irixjp/pai-gitlab-runner:v12.9.1
     container_name: gitlab-runner
     hostname: gitlab-runner
     restart: unless-stopped
@@ -41,7 +41,7 @@ services:
         ipv4_address: 192.168.77.12
 
   web:
-    image: ansible/awx:12.0.0
+    image: irixjp/pai-awx:12.0.0
     container_name: awx_web
     depends_on:
       - redis
@@ -69,7 +69,7 @@ services:
         ipv4_address: 192.168.77.13
 
   task:
-    image: ansible/awx:12.0.0
+    image: irixjp/pai-awx:12.0.0
     container_name: awx_task
     depends_on:
       - redis
@@ -97,7 +97,7 @@ services:
         ipv4_address: 192.168.77.14
 
   redis:
-    image: redis
+    image: irixjp/pai-redis:buster
     container_name: awx_redis
     restart: unless-stopped
     environment:
@@ -113,7 +113,7 @@ services:
         ipv4_address: 192.168.77.15
 
   postgres:
-    image: postgres:10
+    image: irixjp/pai-postgres:10
     container_name: awx_postgres
     restart: unless-stopped
     environment:
