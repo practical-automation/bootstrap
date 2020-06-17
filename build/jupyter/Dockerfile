@@ -26,8 +26,8 @@ RUN useradd jupyter -m -d /jupyter && \
 USER jupyter
 WORKDIR /jupyter
 
-COPY --chown=jupyter:jupyter assets/.jupyter /jupyter/.jupyter
-COPY --chown=jupyter:jupyter assets/.ansible.cfg /jupyter/.ansible.cfg
+COPY --chown=jupyter:jupyter build/jupyter/assets/.jupyter /jupyter/.jupyter
+COPY --chown=jupyter:jupyter build/jupyter/assets/.ansible.cfg /jupyter/.ansible.cfg
 
 RUN echo "alias ls='ls --color'" >> /jupyter/.bashrc  && \
     echo "alias ll='ls -alF --color'" >> /jupyter/.bashrc
