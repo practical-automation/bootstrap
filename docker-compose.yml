@@ -14,6 +14,9 @@ services:
       JPL_PASSWORD: password
       TOWER_HOST: "http://192.168.77.13:8052/"
       TOWER_VERIFY_SSL: "False"
+    labels:
+      infra.description: "console"
+      infra.group: "infra"
     networks:
       infraci_nw:
         ipv4_address: 192.168.77.10
@@ -27,6 +30,9 @@ services:
       - "./files/gitlab.rb:/etc/gitlab/gitlab.rb"
     ports:
       - "8081:80"
+    labels:
+      infra.description: "gitlab"
+      infra.group: "infra"
     networks:
       infraci_nw:
         ipv4_address: 192.168.77.11
@@ -38,6 +44,9 @@ services:
     restart: unless-stopped
     volumes:
       - "/var/run/docker.sock:/var/run/docker.sock"
+    labels:
+      infra.description: "gitlab-runner"
+      infra.group: "infra"
     networks:
       infraci_nw:
         ipv4_address: 192.168.77.12
@@ -65,7 +74,10 @@ services:
     environment:
       http_proxy: 
       https_proxy: 
-      no_proxy: 
+      no_proxy:
+    labels:
+      infra.description: "awx_web"
+      infra.group: "infra"
     networks:
       infraci_nw:
         ipv4_address: 192.168.77.13
@@ -94,6 +106,9 @@ services:
       https_proxy: 
       no_proxy: 
       SUPERVISOR_WEB_CONFIG_PATH: '/etc/supervisord.conf'
+    labels:
+      infra.description: "awx_task"
+      infra.group: "infra"
     networks:
       infraci_nw:
         ipv4_address: 192.168.77.14
@@ -110,6 +125,9 @@ services:
     volumes:
       - "./files/redis.conf:/usr/local/etc/redis/redis.conf:ro"
       - "./files/redis_socket:/var/run/redis/:rw"
+    labels:
+      infra.description: "awx_redis"
+      infra.group: "infra"
     networks:
       infraci_nw:
         ipv4_address: 192.168.77.15
@@ -125,7 +143,10 @@ services:
       PGDATA: /var/lib/postgresql/data/pgdata
       http_proxy: 
       https_proxy: 
-      no_proxy: 
+      no_proxy:
+    labels:
+      infra.description: "awx_postgres"
+      infra.group: "infra"
     networks:
       infraci_nw:
         ipv4_address: 192.168.77.16

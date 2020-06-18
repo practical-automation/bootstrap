@@ -19,7 +19,7 @@ RUN dnf install -y 'dnf-command(config-manager)' && \
     dnf clean all
 
 RUN pip3 install -U pip setuptools && \
-    pip install ansible ansible-lint yamllint yq jq 'molecule[docker]' && \
+    pip install ansible ansible-lint yamllint yq jq 'molecule[docker]' python-gitlab && \
     pip install jupyterlab && \
     pip install "https://github.com/ansible/awx/archive/12.0.0.tar.gz#egg=awxkit&subdirectory=awxkit"
 
