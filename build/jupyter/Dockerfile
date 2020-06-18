@@ -6,7 +6,7 @@ ENV JP_CONF_PATH /jupyter/.jupyter
 
 RUN dnf update -y && \
     dnf install -y glibc-all-langpacks gcc make rpm-build git sudo which tree jq autoconf automake libcurl-devel && \
-    dnf install -y epel-release && dnf install -y czmq-devel && \
+    dnf install -y epel-release && dnf install -y czmq-devel crudini && \
     dnf module install -y python36:3.6/common && \
     dnf module install -y python36:3.6/build && \
     dnf module install -y nodejs:10/common && \
@@ -19,7 +19,7 @@ RUN dnf install -y 'dnf-command(config-manager)' && \
     dnf clean all
 
 RUN pip3 install -U pip setuptools && \
-    pip install ansible ansible-lint yamllint yq jq 'molecule[docker]' python-gitlab && \
+    pip install ansible ansible-lint yamllint yq 'molecule[docker]' python-gitlab && \
     pip install jupyterlab && \
     pip install "https://github.com/ansible/awx/archive/12.0.0.tar.gz#egg=awxkit&subdirectory=awxkit"
 
@@ -36,6 +36,7 @@ WORKDIR /jupyter
 COPY --chown=jupyter:jupyter build/jupyter/assets/.jupyter /jupyter/.jupyter
 COPY --chown=jupyter:jupyter build/jupyter/assets/.ansible.cfg /jupyter/.ansible.cfg
 COPY --chown=jupyter:jupyter build/jupyter/assets/.tower_cli.cfg /jupyter/.tower_cli.cfg
+COPY --chown=jupyter:jupyter build/jupyter/assets/.python-gitlab.cfg /jupyter/.python-gitlab.cfg
 
 RUN ansible-galaxy collection install awx.awx
 
