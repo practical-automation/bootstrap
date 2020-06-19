@@ -1,5 +1,13 @@
 version: "3.6"
 
+x-template: &template
+  image: irixjp/pai-app-base:latest
+  privileged: true
+  command: /sbin/init
+  restart: unless-stopped
+  environment:
+    TZ: Asia/Tokyo
+
 services:
   jupyter:
     image: irixjp/pai-jupyter:latest
@@ -14,6 +22,7 @@ services:
       JPL_PASSWORD: password
       TOWER_HOST: "http://192.168.77.13:8052/"
       TOWER_VERIFY_SSL: "False"
+      TZ: Asia/Tokyo
     labels:
       infra.description: "console"
       infra.group: "infra"
@@ -30,6 +39,8 @@ services:
       - "./files/gitlab.rb:/etc/gitlab/gitlab.rb"
     ports:
       - "8081:80"
+    environment:
+      TZ: Asia/Tokyo
     labels:
       infra.description: "gitlab"
       infra.group: "infra"
@@ -44,6 +55,8 @@ services:
     restart: unless-stopped
     volumes:
       - "/var/run/docker.sock:/var/run/docker.sock"
+    environment:
+      TZ: Asia/Tokyo
     labels:
       infra.description: "gitlab-runner"
       infra.group: "infra"
@@ -75,6 +88,7 @@ services:
       http_proxy: 
       https_proxy: 
       no_proxy:
+      TZ: Asia/Tokyo
     labels:
       infra.description: "awx_web"
       infra.group: "infra"
@@ -106,6 +120,7 @@ services:
       https_proxy: 
       no_proxy: 
       SUPERVISOR_WEB_CONFIG_PATH: '/etc/supervisord.conf'
+      TZ: Asia/Tokyo
     labels:
       infra.description: "awx_task"
       infra.group: "infra"
@@ -125,6 +140,8 @@ services:
     volumes:
       - "./files/redis.conf:/usr/local/etc/redis/redis.conf:ro"
       - "./files/redis_socket:/var/run/redis/:rw"
+    environment:
+      TZ: Asia/Tokyo
     labels:
       infra.description: "awx_redis"
       infra.group: "infra"
@@ -144,12 +161,93 @@ services:
       http_proxy: 
       https_proxy: 
       no_proxy:
+      TZ: Asia/Tokyo
     labels:
       infra.description: "awx_postgres"
       infra.group: "infra"
     networks:
       infraci_nw:
         ipv4_address: 192.168.77.16
+
+  test_lb:
+    <<: *template
+    container_name: test-lb
+    hostname: test-lb
+    ports:
+      - "8180:80"
+    networks:
+      infraci_nw:
+        ipv4_address: 192.168.77.100
+
+  test_web1:
+    <<: *template
+    container_name: test-web1
+    hostname: test-web1
+    ports:
+      - "8181:80"
+    networks:
+      infraci_nw:
+        ipv4_address: 192.168.77.111
+
+  test_web2:
+    <<: *template
+    container_name: test-web2
+    hostname: test-web2
+    ports:
+      - "8182:80"
+    networks:
+      infraci_nw:
+        ipv4_address: 192.168.77.112
+
+  test_db:
+    <<: *template
+    container_name: test-db
+    hostname: test-db
+    ports:
+      - "8183:80"
+    networks:
+      infraci_nw:
+        ipv4_address: 192.168.77.123
+
+  prod_lb:
+    <<: *template
+    container_name: prod-lb
+    hostname: prod-lb
+    ports:
+      - "8190:80"
+    networks:
+      infraci_nw:
+        ipv4_address: 192.168.77.200
+
+  prod_web1:
+    <<: *template
+    container_name: prod-web1
+    hostname: prod-web1
+    ports:
+      - "8191:80"
+    networks:
+      infraci_nw:
+        ipv4_address: 192.168.77.211
+
+  prod_web2:
+    <<: *template
+    container_name: prod-web2
+    hostname: prod-web2
+    ports:
+      - "8192:80"
+    networks:
+      infraci_nw:
+        ipv4_address: 192.168.77.212
+
+  prod_db:
+    <<: *template
+    container_name: prod-db
+    hostname: prod-db
+    ports:
+      - "8193:80"
+    networks:
+      infraci_nw:
+        ipv4_address: 192.168.77.223
 
 volumes:
   supervisor-socket:
