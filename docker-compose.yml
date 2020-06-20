@@ -31,7 +31,7 @@ services:
         ipv4_address: 192.168.77.10
 
   gitlab:
-    image: irixjp/pai-gitlab-ce:12.10.11-ce.0
+    image: irixjp/pai-gitlab-ce:13.0.6-ce.0
     container_name: gitlab
     hostname: gitlab
     restart: unless-stopped
@@ -49,7 +49,7 @@ services:
         ipv4_address: 192.168.77.11
 
   gitlab-runner:
-    image: irixjp/pai-gitlab-runner:v12.9.1
+    image: irixjp/pai-gitlab-runner:v13.1.0
     container_name: gitlab-runner
     hostname: gitlab-runner
     restart: unless-stopped
